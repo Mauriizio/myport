@@ -23,7 +23,7 @@ export default function HomePage() {
           ))}
         </h1>
 
-        <p>Desarrollador Web en formación</p>
+        <p>Frontend Developer</p>
       </header>
 
       <main>
