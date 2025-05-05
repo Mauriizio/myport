@@ -120,7 +120,7 @@ body {
 
 /* ACCESOS – GRID Y CARDS */
 .accesos {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .grid-accesos {
   display: grid;
@@ -148,7 +148,7 @@ body {
     box-shadow 0.3s ease,
     text-shadow 0.3s ease;
   color: #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+  box-shadow: 0 0 10px rgb(255, 231, 252);
 
   /* glow base */
   text-shadow:
@@ -161,7 +161,7 @@ body {
 
 .acceso-card:hover {
   transform: scale(1.05) rotate(-1deg);
-  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+  box-shadow: 0 0 15px rgba(216, 41, 255, 0.671);
 
   /* glow extra al hover */
   text-shadow:
@@ -217,12 +217,15 @@ footer {
 }
 @media (min-width: 900px) {
   .grid-proyectos { grid-template-columns: repeat(3,1fr); }
+
+ 
 }
 @media (max-width: 600px) {
   .grid-accesos { grid-template-columns: repeat(2,1fr); }
   .acceso-card {
     padding: 1rem;
     font-size: 1rem;
+  
   }
 }
 @media (max-width: 400px) {
@@ -232,6 +235,8 @@ footer {
     font-size: 0.9rem;
   }
 }
+
+
 
 /* ANIMACIONES */
 @keyframes fadeIn {
