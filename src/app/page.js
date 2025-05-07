@@ -1,21 +1,23 @@
 import Image from "next/image";
 import ParticlesBackground from "./components/ParticlesBackground";
-
+import AvatarNeon from "./components/AvatarNeon";
 
 export default function HomePage() {
   return (
     <div className="container">
       <header className="header">
+        
+      <AvatarNeon />
         <ParticlesBackground />
 
-        <Image
+        {/*<Image
           src="/mi-avatar.png"
           alt="Foto de Deck Maurice"
           className="avatar"
           width={120}
           height={120}
           unoptimized
-        />
+        />*/}
 
         <h1 className="neon-text">
           {"Maurizio Caballero".split("").map((char, i) => (

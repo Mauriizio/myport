@@ -1,19 +1,19 @@
-"use client" // Directiva para indicar que este es un componente del lado del cliente
+"use client"
 
-import { useCallback } from "react"; // Importamos useCallback para memorizar funciones
-import Particles from "react-tsparticles"; // Componente principal de partículas
-import { loadSlim } from "tsparticles-slim"; // Versión slim del motor para compatibilidad
+import { useCallback } from "react";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+  import { loadSlim } from "tsparticles-slim";
 
 export default function ParticlesBackground() {
-  // Inicializa el motor de partículas con todos los addons necesarios
   const particlesInit = useCallback(async (engine) => {
-    await loadSlim(engine);
+ await loadSlim(engine);
   }, []);
 
   return (
     <Particles
-      id="tsparticles" // ID del canvas
-      init={particlesInit} // Función de inicialización
+      id="tsparticles"
+      init={particlesInit}
       options={{
         fullScreen: { enable: false },
         background: { color: "transparent" },
@@ -21,7 +21,7 @@ export default function ParticlesBackground() {
           number: { value: 100, density: { enable: true, area: 800 } },
           color: { value: ["#00ffea", "#ff00f7", "#00ff00", "#ffffff"] },
           shape: {
-            type: ["char", "image"], // mezclar texto e imágenes
+            type: ["char", "image"],
             character: {
               value: ["{", "}", "<", ">", "/", "*", "const", "let", "return", "()", "==", "==="],
               font: "monospace",
@@ -60,7 +60,13 @@ export default function ParticlesBackground() {
             touchend: { enable: true, mode: "repulse" }
           },
           modes: {
-            repulse: { distance: 120, duration: 0.6, speed: 4, maxSpeed: 5, easing: "ease-out" },
+            repulse: {
+              distance: 120,
+              duration: 0.6,
+              speed: 4,
+              maxSpeed: 5,
+              easing: "ease-out"
+            },
             push: { quantity: 2 }
           }
         },
