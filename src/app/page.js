@@ -25,7 +25,7 @@ export default function HomePage() {
 
         <p>Frontend Developer</p>
       </header>
-
+{/*
       <main>
         <section className="sobre-mi">
           <h2>Sobre mí</h2>
@@ -59,7 +59,7 @@ export default function HomePage() {
 
       <footer>
         <p>Contacto: devmauri@gmail.com</p>
-      </footer>
+      </footer>*/}
     </div>
   );
 }
