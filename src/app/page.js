@@ -1,6 +1,6 @@
 import Image from "next/image";
 import ParticlesBackground from "./components/ParticlesBackground";
-import "./page.module.css"; // o la ruta correcta a tu CSS global
+
 
 export default function HomePage() {
   return (

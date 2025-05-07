@@ -2,12 +2,12 @@
 
 import { useCallback } from "react"; // Importamos useCallback para memorizar funciones
 import Particles from "react-tsparticles"; // Componente principal de partículas
-import { loadFull } from "tsparticles"; // Cargamos el motor completo para soporte de imágenes
+import { loadSlim } from "tsparticles-slim"; // Versión slim del motor para compatibilidad
 
 export default function ParticlesBackground() {
   // Inicializa el motor de partículas con todos los addons necesarios
   const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
+    await loadSlim(engine);
   }, []);
 
   return (
@@ -60,13 +60,7 @@ export default function ParticlesBackground() {
             touchend: { enable: true, mode: "repulse" }
           },
           modes: {
-            repulse: {
-              distance: 120,
-              duration: 0.6,
-              speed: 4,
-              maxSpeed: 5,
-              easing: "ease-out"
-            },
+            repulse: { distance: 120, duration: 0.6, speed: 4, maxSpeed: 5, easing: "ease-out" },
             push: { quantity: 2 }
           }
         },
