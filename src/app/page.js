@@ -7,7 +7,7 @@ export default function HomePage() {
     <div className="container">
       <header className="header">
         
-      <AvatarNeon />
+        <AvatarNeon />
         <ParticlesBackground />
 
         {/*<Image
@@ -26,6 +26,13 @@ export default function HomePage() {
         </h1>
 
         <p>Frontend Developer</p>
+
+        {/* Botones estilo tubo neón */}
+        <div className="button-row">
+          <button className="button-neon">About</button>
+          <button className="button-neon">Projects</button>
+          <button className="button-neon">Contact</button>
+        </div>
       </header>
 {/*
       <main>
