@@ -245,23 +245,17 @@ footer {
 }
 
 
-.avatar-container {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto;
-  border: 4px solid #0ff;          /* borde base neón */
-  box-shadow: 0 0 20px #0ff;       /* glow base */
-  position: relative;
-}
+
+
 
 /* Opcional: filtrar la imagen para que contraste más */
+
 .avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.8);
+  border-radius: 50%;
+  display: block;
 }
 
 
@@ -271,6 +265,7 @@ footer {
   gap: 1rem;
   justify-content: center;
   margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
 .button-neon {
@@ -305,4 +300,30 @@ footer {
 /* Aplica la animación */
 .button-neon {
   animation: neonButtonGlow 3s infinite ease-in-out;
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow:
+      0 0 4px #00ffff,
+      0 0 8px #ff00ff,
+      0 0 16px rgba(0, 255, 255, 0.2),
+      0 0 16px rgba(255, 0, 255, 0.2);
+  }
+  100% {
+    box-shadow:
+      0 0 8px #00ffff,
+      0 0 16px #ff00ff,
+      0 0 24px rgba(0, 255, 255, 0.4),
+      0 0 24px rgba(255, 0, 255, 0.4);
+  }
+}
+/* Pulsación suave del glow */
+@keyframes neonPulseAvatar {
+  0% {
+    filter: blur(6px) brightness(1.1);
+  }
+  100% {
+    filter: blur(10px) brightness(1.3);
+  }
 }

@@ -2,13 +2,16 @@ import Image from "next/image";
 import ParticlesBackground from "./components/ParticlesBackground";
 import AvatarNeon from "./components/AvatarNeon";
 
+import ButtonsRow from "./components/ButtonsRow";
+
+
 export default function HomePage() {
   return (
     <div className="container">
       <header className="header">
-        
+      <ParticlesBackground />
         <AvatarNeon />
-        <ParticlesBackground />
+       
 
         {/*<Image
           src="/mi-avatar.png"
@@ -26,13 +29,16 @@ export default function HomePage() {
         </h1>
 
         <p>Frontend Developer</p>
+        <ButtonsRow />
 
-        {/* Botones estilo tubo neón */}
+       
+        {/* Botones estilo tubo neón 
         <div className="button-row">
           <button className="button-neon">About</button>
           <button className="button-neon">Projects</button>
           <button className="button-neon">Contact</button>
-        </div>
+        </div> */}
+       
       </header>
 {/*
       <main>
