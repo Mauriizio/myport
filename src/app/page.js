@@ -23,7 +23,7 @@ export default function HomePage() {
         />*/}
 
         <h1 className="neon-text">
-          {"Maurizio Caballero".split("").map((char, i) => (
+          {"MAURIZIO CABALLERO".split("").map((char, i) => (
             <span key={i}>{char === " " ? "\u00A0" : char}</span>
           ))}
         </h1>
