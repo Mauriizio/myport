@@ -1,357 +1,565 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+/* Añadir estas reglas al principio del archivo para asegurar que las imágenes del avatar estén ocultas inicialmente */
+/* Estado inicial: avatar oculto */
+ .avatar-container.neon-off img {
+   opacity: 0;
+   transition: none;
+ }
 
+ /* Estado final: avatar encendido */
+ .avatar-container.neon-on img {
+   opacity: 1;
+   transition: opacity 1s ease-in;
+ }
 
-/* Degradado profundo tipo universo */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  
-  /* Si quieres un degradado lineal:
-     background: linear-gradient(180deg, #0d0d1f 0%, #000010 100%); 
-  */
-  overflow: hidden; /* Asegura que no aparezca scroll por el canvas */
-}
-
-body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at center, #1a1a2e 0%, #0d0d1a 40%, #00000f 100%);
+  color: #fff;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-    color: white;
+  padding: 0;
+  overflow: hidden; /* Evitar scroll */
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Estilos para las secciones con parallax */
+.parallax-section {
+  position: relative;
+  will-change: transform;
+}
+
+.section-content {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Aseguramos que las secciones tengan suficiente altura */
+.about-section,
+.projects-section {
   min-height: 100vh;
-}
-
-/* HEADER */
-.header {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
-  position: relative;
-  height: 90vh;
-  background: radial-gradient(
-    circle at center,
-    #1a1a2e 0%,        /* centro: azul muy oscuro pero iluminado */
-    #0d0d1a 40%,       /* transición a un tono más oscuro */
-    #00000f 100%       /* bordes totalmente oscuros */
-  );
+}
 
-  /*background-size: 400% 400%;
-  animation: gradient 15s ease infinite, fadeIn 1s ease-in-out;*/
-  /*overflow: hidden;*/
+/* Estilos para el contenedor principal */
+.container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribuir espacio verticalmente */
+}
+
+/* Estilos para el header */
+.header {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  padding: 2rem;
+  padding-bottom: 4rem; /* Aumentar el padding inferior */
 }
 
-/* PARTICULAS */
-#tsparticles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-/* AVATAR */
-.avatar {
-  background-color: rgba(8, 4, 62, 0.4);
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow: 0 0 10px rgba(255,255,255,0.4);
-  margin-bottom: 1rem;
-  transition: transform 0.3s ease;
-}
-.avatar:hover {
-  transform: scale(1.05);
-}
-
-/* HEADER TEXT */
-.header img,
-.header p {
-  position: relative;
-  z-index: 1;
-}
-
-/* NEÓN BASE + HOVER POR LETRA */
+/* Estilos para el título neón */
 .neon-text {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
-  color: #ffffff;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  letter-spacing: 1px;
-  text-align: center;
-  display: inline-block;
-  white-space: nowrap;
-  position: relative;
-  z-index: 1;
-
-  text-shadow:
-    /* trazo base: 1px offsets */
-    1px  1px 0 #fff,
-   -1px  1px 0 #fff,
-    1px -1px 0 #fff,
-   -1px -1px 0 #fff,
-    /* glow existente: */
-    0 0 10px hsl(260,25%,21%),
-    0.6px -0.9px 1.5px #ff00ff9d,
-    0 0 3px #e68efe,
-    0 -1px 3px #bbfdff,
-    -1px 3px 3px #bbc9ff;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.5);
+  margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
 .neon-text span {
   display: inline-block;
-  text-shadow:
-    0 0 10px hsl(260, 25%, 21%),
-    0.6px -0.9px 1.5px #ff00ff9d,
-    0 0 3px #e68efe,
-    0 -1px 3px #bbfdff,
-    -1px 3px 3px #bbc9ff;
-  transition: text-shadow 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .neon-text span:hover {
-  transform: scale(1.15);
-  text-shadow:
-    0 0 10px hsl(260, 25%, 21%),
-    0.6px -0.9px 2px #ff00ff,
-    0 0 6px #e68efe,
-    0 -1px 6px #bbfdff,
-    -1px 3px 6px #bbc9ff,
-    0 0 20px #ffffffa0;
+  color: #ff00ff !important; /* Forzar el color magenta en hover */
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px rgba(255, 0, 255, 0.5) !important; /* Forzar la sombra en hover */
+  transform: translateY(-5px);
 }
 
-@media (hover: none) {
-  .neon-text span:active {
-    transform: scale(1.15);
-    text-shadow:
-      0 0 10px hsl(260, 25%, 21%),
-      0.6px -0.9px 2px #ff00ff,
-      0 0 6px #e68efe,
-      0 -1px 6px #bbfdff,
-      -1px 3px 6px #bbc9ff,
-      0 0 20px #ffffffa0;
-  }
-}
-
-/* SOBRE MÍ */
-.sobre-mi,
-.proyectos {
+/* Estilos para el subtítulo */
+.header p {
+  font-size: 1.5rem;
+  color: #fff;
   margin-bottom: 2rem;
 }
 
-/* ACCESOS – GRID Y CARDS */
-.accesos {
-  margin-top: 2rem;
-}
-.grid-accesos {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center; /* centra each card */
-}
-
-.acceso-card {
-  /* No definir background aquí, para no tapar las subclases */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  border: 2px solid #444;
-  padding: 2rem;
-  min-height: 100px;
-  width: 80%;              /* ancho restaurado */
-  border-radius: 12px;
-  font-size: 1.2rem;
-  text-align: center;
-  cursor: pointer;
-  transition:
-    transform 0.4s ease,
-    box-shadow 0.3s ease,
-    text-shadow 0.3s ease;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.05);
-
-  /* glow base */
-  text-shadow:
-    0 0 10px hsl(260, 25%, 21%),
-    0.6px -0.9px 1.5px #ff00ff9d,
-    0 0 3px #e68efe,
-    0 -1px 3px #bbfdff,
-    -1px 3px 3px #bbc9ff;
-}
-
-.acceso-card:hover {
-  transform: scale(1.05) rotate(-1deg);
-  box-shadow: 0 0 15px rgba(255,255,255,0.2);
-
-  /* glow extra al hover */
-  text-shadow:
-    0 0 10px hsl(260, 25%, 21%),
-    0.6px -0.9px 2px #ff00ff,
-    0 0 6px #e68efe,
-    0 -1px 6px #bbfdff,
-    -1px 3px 6px #bbc9ff,
-    0 0 20px #ffffffa0;
-}
-
-/* IMÁGENES DE FONDO POR SUBCLASES */
-.acceso-card.musica {
-  background-image: url('/cantando.jpg');
-}
-.acceso-card.trabajos {
-  background-image: url('/desarrollo1.png');
-}
-.acceso-card.desarrollo {
-  background-image: url('/yoia.png');
-}
-.acceso-card.formacion {
-  background-image: url('/formacion.jpg');
-}
-
-/* PROYECTOS */
-.grid-proyectos {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-}
-.proyecto-card {
-  background: #333;
-  padding: 1rem;
-  border-radius: 8px;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-.proyecto-card:hover {
-  transform: translateY(-5px);
-  background: #444;
-}
-
-/* FOOTER */
-footer {
-  background: #111;
-  text-align: center;
-  padding: 1rem;
-}
-
-/* RESPONSIVE */
-@media (min-width: 600px) {
-  .grid-proyectos { grid-template-columns: 1fr 1fr; }
-}
-@media (min-width: 900px) {
-  .grid-proyectos { grid-template-columns: repeat(3,1fr); }
-}
-@media (max-width: 600px) {
-  .grid-accesos { grid-template-columns: repeat(2,1fr); }
-  .acceso-card {
-    padding: 1rem;
-    font-size: 1rem;
-  }
-}
-@media (max-width: 400px) {
-  .grid-accesos { grid-template-columns: 1fr; }
-  .acceso-card {
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* ANIMACIONES */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes gradient {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-
-
-
-
-/* Opcional: filtrar la imagen para que contraste más */
-
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-
-
-/* ================ Botones Neón ================ */
+/* Estilos para la fila de botones */
 .button-row {
   display: flex;
-  gap: 1rem;
   justify-content: center;
+  gap: 1.5rem;
   margin-top: 2rem;
+  margin-bottom: 2rem; /* Añadir margen inferior */
   flex-wrap: wrap;
 }
 
-.button-neon {
+/* Estilos para el avatar simple */
+.avatar-container {
   position: relative;
-  padding: 0.8rem 2rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #fff;
-  background: transparent;
-  border: 3px solid #0ff;
-  border-radius: 50px;
-  box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 2rem;
+  z-index: 2;
 }
 
-.button-neon:hover {
-  transform: scale(1.05);
+.avatar-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 15px #00ffff, 0 0 25px rgba(0, 255, 255, 0.5);
+  animation: neonPulse 2s infinite alternate;
 }
 
-/* Animación de glow pulsante para botones */
-@keyframes neonButtonGlow {
-  0%,100% {
-    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
-  }
-  50% {
-    box-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 80px #0ff;
-  }
-}
-
-/* Aplica la animación */
-.button-neon {
-  animation: neonButtonGlow 3s infinite ease-in-out;
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @keyframes neonPulse {
-  0% {
-    box-shadow:
-      0 0 4px #00ffff,
-      0 0 8px #ff00ff,
-      0 0 16px rgba(0, 255, 255, 0.2),
-      0 0 16px rgba(255, 0, 255, 0.2);
+  from {
+    box-shadow: 0 0 15px #00ffff, 0 0 25px rgba(0, 255, 255, 0.5);
   }
-  100% {
-    box-shadow:
-      0 0 8px #00ffff,
-      0 0 16px #ff00ff,
-      0 0 24px rgba(0, 255, 255, 0.4),
-      0 0 24px rgba(255, 0, 255, 0.4);
+  to {
+    box-shadow: 0 0 20px #00ffff, 0 0 30px rgba(0, 255, 255, 0.7);
   }
 }
-/* Pulsación suave del glow */
-@keyframes neonPulseAvatar {
-  0% {
-    filter: blur(6px) brightness(1.1);
-  }
+
+/* Estilos para los botones de acción */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.neon-button {
+  padding: 0.8rem 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+  transform: translateY(-3px);
+}
+
+.neon-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.neon-button:hover::before {
+  left: 100%;
+}
+
+/* Estados de los elementos neón */
+.neon-off {
+  /* Estado apagado: solo bordes visibles sin brillo */
+  border-color: rgba(0, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  opacity: 0.7;
+  transition: none !important;
+}
+
+.neon-on {
+  /* Estado encendido: brillo completo */
+  opacity: 1;
+  transition: all 0.3s ease !important;
+}
+
+/* Efecto de parpadeo */
+.neon-flickering {
+  animation: neonFlicker 1s ease-in-out infinite !important;
+}
+
+@keyframes neonFlicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
   100% {
-    filter: blur(10px) brightness(1.3);
+    border-color: #00ffff;
+    box-shadow: 0 0 15px #00ffff, 0 0 25px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.5);
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    border-color: rgba(0, 255, 255, 0.2);
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.3);
+    text-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+/* Efecto específico para el texto neón */
+.neon-text.neon-off span {
+  color: rgba(255, 255, 255, 0.3) !important;
+  text-shadow: none !important;
+  transition: none !important;
+}
+
+.neon-text.neon-flickering span {
+  animation: textFlicker 1.5s ease-in-out infinite !important;
+  animation-delay: calc(0.06s * var(--char-index)) !important;
+}
+
+@keyframes textFlicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.5);
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    color: rgba(255, 255, 255, 0.3);
+    text-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+/* Efecto específico para el avatar neón */
+.avatar-container.neon-off .avatar-circle {
+  border-color: rgba(0, 255, 255, 0.2) !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.avatar-container.neon-flickering .avatar-circle {
+  animation: avatarFlicker 1.2s ease-in-out infinite !important;
+}
+
+@keyframes avatarFlicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    border-color: #00ffff;
+    box-shadow: 0 0 15px #00ffff, 0 0 25px rgba(0, 255, 255, 0.5);
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    border-color: rgba(0, 255, 255, 0.2);
+    box-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+/* Efecto específico para los botones neón */
+.neon-button.neon-off {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(0, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.neon-button.neon-flickering {
+  animation: buttonFlicker 1s ease-in-out infinite !important;
+}
+
+@keyframes buttonFlicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  25%,
+  54%,
+  56%,
+  100% {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: #00ffff;
+    color: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+/* Estilos para el footer */
+footer {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2rem 0;
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-content p {
+  color: #ccc;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.social-link {
+  color: #fff;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-link:hover {
+  color: #00ffff;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .neon-text {
+    font-size: 2rem;
+  }
+
+  .button-row {
+    gap: 1rem;
+  }
+}
+
+/* Estilos para las secciones */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  border-radius: 3px;
+}
+
+.neon-highlight {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* Ajustes responsivos para asegurar que todo quepa en la pantalla */
+@media (max-height: 700px) {
+  .neon-text {
+    font-size: 2.5rem;
+  }
+
+  .header p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .avatar-container {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 1.5rem;
+  }
+
+  .button-row {
+    gap: 1rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .neon-text {
+    font-size: 2rem;
+  }
+
+  .header p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .avatar-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .neon-text {
+    font-size: 2rem;
+  }
+
+  .button-row {
+    gap: 0.8rem;
+  }
+
+  .header {
+    padding: 1rem;
   }
 }

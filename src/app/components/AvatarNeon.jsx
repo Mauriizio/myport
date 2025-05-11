@@ -28,7 +28,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
   const radius = size / 2;
 
   return (
-    <div
+    <div className="avatar-container"
       style={{
         position: "relative",
         width: totalSize,
