@@ -8,23 +8,17 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
 
   useEffect(() => {
     const blurEl = document.getElementById("blur");
-    const circleEl = ringRef.current;
 
     gsap.to(blurEl, {
-      attr: { stdDeviation: 6 },
+      attr: { stdDeviation: 8 }, // 💡 Aumentamos el glow
       repeat: -1,
       yoyo: true,
       duration: 1.2,
       ease: "sine.inOut"
     });
 
-    gsap.to(circleEl, {
-      rotation: 360,
-      transformOrigin: "50% 50%",
-      repeat: -1,
-      ease: "linear",
-      duration: 20
-    });
+    // ❌ Eliminamos rotación
+    // gsap.to(circleEl, { ... });
   }, []);
 
   const padding = 20;
@@ -43,7 +37,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
         overflow: "visible",
       }}
     >
-      {/* 🔽 Imagen inferior completa (hombros) debajo del aro */}
+      {/* 🔽 Imagen completa (hombros) */}
       <img
         src={src}
         alt="Avatar fondo"
@@ -58,7 +52,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
         }}
       />
 
-      {/* 🔄 Aro de neón en el medio */}
+      {/* 🔵 Aro con degradado estático y glow fuerte */}
       <svg
         width={totalSize}
         height={totalSize}
@@ -72,15 +66,17 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
         }}
       >
         <defs>
-          <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#00FFFF" />
-            <stop offset="100%" stopColor="#FF00FF" />
+          {/* 🎨 Degradado horizontal: izquierda magenta, derecha cyan */}
+          <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor= "#00FFFF"/>
+            <stop offset="100%" stopColor= "#FF00FF"  />
           </linearGradient>
 
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur id="blur" in="SourceGraphic" stdDeviation="4" result="blurred" />
+          <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur id="blur" in="SourceGraphic" stdDeviation="8" result="blurred" />
             <feMerge>
               <feMergeNode in="blurred" />
+              <feMergeNode in="blurred" /> {/* Más glow */}
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
@@ -98,7 +94,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
         />
       </svg>
 
-      {/* 🔼 Imagen superior recortada (solo cabeza) por encima del aro */}
+      {/* 🔼 Parte superior recortada por encima del aro */}
       <img
         src={src}
         alt="Avatar cabeza"
