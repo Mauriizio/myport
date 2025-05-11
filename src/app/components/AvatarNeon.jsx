@@ -1,4 +1,3 @@
-// src/app/components/AvatarNeon.jsx
 "use client";
 
 import { useRef, useEffect } from "react";
@@ -11,7 +10,6 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
     const blurEl = document.getElementById("blur");
     const circleEl = ringRef.current;
 
-    
     gsap.to(blurEl, {
       attr: { stdDeviation: 6 },
       repeat: -1,
@@ -20,7 +18,6 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
       ease: "sine.inOut"
     });
 
-    // 2) Rotación lenta del degradado
     gsap.to(circleEl, {
       rotation: 360,
       transformOrigin: "50% 50%",
@@ -30,21 +27,49 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
     });
   }, []);
 
-
-  // Padding for glow
   const padding = 20;
+  const overshoot = 60;
   const totalSize = size + padding * 2;
   const center = totalSize / 2;
   const radius = size / 2;
 
   return (
-    <div style={{ position: "relative", width: totalSize, height: totalSize, margin: "0 auto" }}>
-      {/* SVG ring with extra canvas for glow placed above the image */}
+    <div
+      style={{
+        position: "relative",
+        width: totalSize,
+        height: totalSize + overshoot,
+        margin: "0 auto",
+        overflow: "visible",
+      }}
+    >
+      {/* 🔽 Imagen inferior completa (hombros) debajo del aro */}
+      <img
+        src={src}
+        alt="Avatar fondo"
+        style={{
+          position: "absolute",
+          top: padding - 10,
+          left: padding,
+          width: size,
+          height: size + overshoot,
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      />
+
+      {/* 🔄 Aro de neón en el medio */}
       <svg
         width={totalSize}
         height={totalSize}
         viewBox={`0 0 ${totalSize} ${totalSize}`}
-        style={{ position: "absolute", top: 0, left: 0, overflow: "visible", zIndex: 2 }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          overflow: "visible",
+          zIndex: 1,
+        }}
       >
         <defs>
           <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -53,7 +78,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
           </linearGradient>
 
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-+           <feGaussianBlur id="blur" in="SourceGraphic" stdDeviation="4"       result="blurred" />
+            <feGaussianBlur id="blur" in="SourceGraphic" stdDeviation="4" result="blurred" />
             <feMerge>
               <feMergeNode in="blurred" />
               <feMergeNode in="SourceGraphic" />
@@ -73,19 +98,19 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
         />
       </svg>
 
-      {/* Avatar image centered, below the ring */}
+      {/* 🔼 Imagen superior recortada (solo cabeza) por encima del aro */}
       <img
         src={src}
-        alt="Avatar"
+        alt="Avatar cabeza"
         style={{
-          width: size,
-          height: size,
-          borderRadius: "50%",
           position: "absolute",
-          top: padding,
+          top: padding - 10,
           left: padding,
+          width: size,
+          height: size + overshoot,
           objectFit: "cover",
-          zIndex: 1,
+          zIndex: 2,
+          clipPath: `ellipse(${size / 2}px ${size / 2.5}px at 50% ${size / 2.5}px)`
         }}
       />
     </div>
