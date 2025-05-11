@@ -4,7 +4,7 @@
 
 /* Degradado profundo tipo universo */
 body, .header {
-  background: radial-gradient(circle at bottom, #0a0a1a 0%, #000010 80%);
+  
   /* Si quieres un degradado lineal:
      background: linear-gradient(180deg, #0d0d1f 0%, #000010 100%); 
   */
@@ -14,8 +14,7 @@ body, .header {
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #111, #1a1a1a);
-  color: white;
+    color: white;
 }
 
 .container {
@@ -33,9 +32,15 @@ body {
   padding: 2rem 1rem;
   position: relative;
   height: 90vh;
-  background: linear-gradient(135deg, #21214e, #08043e, #000000);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite, fadeIn 1s ease-in-out;
+  background: radial-gradient(
+    circle at center,
+    #1a1a2e 0%,        /* centro: azul muy oscuro pero iluminado */
+    #0d0d1a 40%,       /* transición a un tono más oscuro */
+    #00000f 100%       /* bordes totalmente oscuros */
+  );
+
+  /*background-size: 400% 400%;
+  animation: gradient 15s ease infinite, fadeIn 1s ease-in-out;*/
   overflow: hidden;
   text-align: center;
 }
@@ -85,6 +90,19 @@ body {
   white-space: nowrap;
   position: relative;
   z-index: 1;
+
+  text-shadow:
+    /* trazo base: 1px offsets */
+    1px  1px 0 #fff,
+   -1px  1px 0 #fff,
+    1px -1px 0 #fff,
+   -1px -1px 0 #fff,
+    /* glow existente: */
+    0 0 10px hsl(260,25%,21%),
+    0.6px -0.9px 1.5px #ff00ff9d,
+    0 0 3px #e68efe,
+    0 -1px 3px #bbfdff,
+    -1px 3px 3px #bbc9ff;
 }
 
 .neon-text span {

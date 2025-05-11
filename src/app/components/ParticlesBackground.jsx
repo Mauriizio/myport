@@ -14,11 +14,18 @@ export default function ParticlesBackground() {
   const starsOptions = {
     fullScreen: { enable: false },    // desactivado, ocupamos 100% del contenedor
     background: { color: "transparent" },
+    
+    
     particles: {
-      number: { value: 200, density: { enable: true, area: 1200 } },
-      color: { value: "#ffffff" },
+      number: { value: 400, density: { enable: true, area: 900 } },
+      color: {
+      value: ["#ffffff", "#00ffff", "#ff00ff"]
+    },
       shape: { type: "circle" },
-      size: { value: { min: 0.5, max: 1.5 } },
+      size: {
+      value: { min: 0.1, max: 2.2 },    // antes 0.5–1.5, ahora 0.3–3
+      random: { enable: true, minimumValue: 0.3 }
+    },
       move: {
         enable: true,
         speed: 0.1,
@@ -27,8 +34,34 @@ export default function ParticlesBackground() {
         straight: false,
         outModes: { default: "out" }
       },
-      opacity: { value: { min: 0.2, max: 0.5 } }
+      opacity: { 
+        value: { min: 0.4, max: 1 },
+        random: { enable: true, minimumValue: 0.5 },
+        animation: {
+        enable: true,
+        speed: 3,
+        minimumValue: 0.3,
+        sync: false
+    }
+      }
     },
+
+    twinkle: {
+  particles: {
+    enable: true,
+    frequency: 0.1,    // cada 10% de frames una partícula titilea
+    opacity: 1         // opacidad de ese destello
+  }
+},
+
+
+    shadow: {
+    enable: true,
+    color: "#F3F8FF",  // color del glow (puede ser blanco o cian/magenta)
+    blur: 12,           // qué tan difuso
+    offset: { x: 0, y: 0 }
+  },
+
     interactivity: {
       detectsOn: "window",
       events: { onHover: { enable: false }, onClick: { enable: false }, resize: true }
@@ -41,12 +74,12 @@ export default function ParticlesBackground() {
     fullScreen: { enable: false },
     background: { color: "transparent" },
     particles: {
-      number: { value: 100, density: { enable: true, area: 800 } },
+      number: { value: 33, density: { enable: true, area: 800 } },
       color: { value: ["#00ffea", "#ff00f7", "#00ff00", "#ffffff"] },
       shape: {
         type: ["char", "image"],
         character: {
-          value: ["{", "}", "<", ">", "/", "*", "const", "let", "return", "()", "==", "==="],
+          value: ["{", "}", "<", ">", "/", "*", "const", "let", "return", "(=)", "==", "+", "</>",  "===", "[ ]", "=>", "&&", "||", "if", "else", "for", "while", "do", "case", "break", "class", "import", "export"],
           font: "monospace",
           weight: "400",
           fill: true
@@ -60,7 +93,7 @@ export default function ParticlesBackground() {
           { src: "/logos/lwor.png", width: 20, height: 20 }
         ]
       },
-      size: { value: { min: 6, max: 13 } },
+      size: { value: { min: 4, max: 15 } },
       move: {
         enable: true,
         speed: 1,
@@ -70,7 +103,15 @@ export default function ParticlesBackground() {
         outModes: { default: "out" },
         attract: { enable: true, rotateX: 600, rotateY: 1200 }
       },
-      opacity: { value: 0.8 }
+      opacity: { value: 0.8, random: false, animation: { enable: true, speed: 1, minimumValue: 1, sync: true } },
+
+       shadow: {
+    enable: true,
+    color: "#F3F8FF",  // por ejemplo magenta o cian
+    blur: 4,
+    offset: { x: 0, y: 0 }
+  }
+      
     },
     interactivity: {
       detectsOn: "window",

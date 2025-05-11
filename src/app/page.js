@@ -23,10 +23,15 @@ export default function HomePage() {
         />*/}
 
         <h1 className="neon-text">
-          {"MAURIZIO CABALLERO".split("").map((char, i) => (
-            <span key={i}>{char === " " ? "\u00A0" : char}</span>
-          ))}
-        </h1>
+  {"MAURIZIO CABALLERO".split(" ").map((word, w) => (
+    <div key={w} style={{ display: "block" }}>
+      {word.split("").map((char, i) => (
+        <span key={i}>{char}</span>
+      ))}
+    </div>
+  ))}
+</h1>
+
 
         <p>Frontend Developer</p>
         <ButtonsRow />
