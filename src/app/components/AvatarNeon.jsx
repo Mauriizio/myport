@@ -1,48 +1,11 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import gsap from "gsap"
+import { useRef } from "react"
 
 export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
   const ringRef = useRef()
   const baseImageRef = useRef()
   const topImageRef = useRef()
-
-  useEffect(() => {
-    const blurEl = document.getElementById("blur")
-
-    // Animación más nítida del glow del aro
-    gsap.to(blurEl, {
-      attr: { stdDeviation: "4 4" }, // Valores más pequeños para evitar que se vea borroso
-      repeat: -1,
-      yoyo: true,
-      duration: 1.5,
-      ease: "sine.inOut",
-    })
-
-    // Animación del shadow de las imágenes del avatar
-    if (baseImageRef.current && topImageRef.current) {
-      // Animación para la imagen base
-      gsap.to(baseImageRef.current, {
-        filter:
-          "grayscale(0%) brightness(1.1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.9)) drop-shadow(0 0 8px rgba(255, 0, 255, 0.7))",
-        repeat: -1,
-        yoyo: true,
-        duration: 2,
-        ease: "sine.inOut",
-      })
-
-      // Animación para la imagen superior
-      gsap.to(topImageRef.current, {
-        filter:
-          "grayscale(0%) brightness(1.1) drop-shadow(0 0 5px rgba(0, 255, 255, 0.9)) drop-shadow(0 0 8px rgba(255, 0, 255, 0.7))",
-        repeat: -1,
-        yoyo: true,
-        duration: 2,
-        ease: "sine.inOut",
-      })
-    }
-  }, [])
 
   const padding = 20
   const overshoot = 60
@@ -75,7 +38,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
           objectFit: "cover",
           zIndex: 0,
           filter: "grayscale(90%) brightness(0.7)", // Inicialmente desaturada y oscura
-          transition: "filter 0.1s ease", // Transición rápida para encendido brusco
+          transition: "all 0s", // Sin transición para encendido instantáneo
         }}
         className="avatar-image-base"
       />
@@ -100,8 +63,8 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
             <stop offset="100%" stopColor="#FF00FF" />
           </linearGradient>
 
-          <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur id="blur" in="SourceGraphic" stdDeviation="4" result="blurred" />
+          <filter id="avatarGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur id="avatarBlur" in="SourceGraphic" stdDeviation="4" result="blurred" />
             <feMerge>
               <feMergeNode in="blurred" />
               <feMergeNode in="blurred" /> {/* Más glow */}
@@ -118,7 +81,9 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
           fill="none"
           stroke="url(#avatarGrad)"
           strokeWidth="5"
-          filter="url(#glow)"
+          filter="url(#avatarGlow)"
+          className="avatar-ring"
+          style={{ transition: "all 0s" }} // Sin transición para encendido instantáneo
         />
       </svg>
 
@@ -137,7 +102,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
           zIndex: 2,
           clipPath: `ellipse(${size / 2}px ${size / 2.5}px at 50% ${size / 2.5}px)`,
           filter: "grayscale(90%) brightness(0.7)", // Inicialmente desaturada y oscura
-          transition: "filter 0.1s ease", // Transición rápida para encendido brusco
+          transition: "all 0s", // Sin transición para encendido instantáneo
         }}
         className="avatar-image-top"
       />

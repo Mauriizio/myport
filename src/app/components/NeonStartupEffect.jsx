@@ -1,21 +1,22 @@
 "use client"
 
 import { useEffect } from "react"
+import gsap from "gsap"
 
 export default function NeonStartupEffect() {
   useEffect(() => {
     // Elementos que queremos encender
-    const avatarElement = document.querySelector(".avatar-container") || document.querySelector("svg circle")
-    const avatarCircle = avatarElement?.querySelector("circle") || avatarElement
-
-    // Todas las imágenes dentro del avatar
+    const avatarContainer = document.querySelector(".avatar-container")
+    const avatarRing = document.querySelector(".avatar-ring")
     const avatarImages = document.querySelectorAll(".avatar-container img")
+    const avatarBlur = document.getElementById("avatarBlur")
 
     const titleElement = document.querySelector("h1.neon-text")
     const titleSpans = titleElement ? Array.from(titleElement.querySelectorAll("span")) : []
 
     const buttonElements = Array.from(document.querySelectorAll(".button-row svg")) || []
     const buttonRects = buttonElements.map((btn) => btn.querySelector("rect"))
+    const buttonBlurs = buttonElements.map((btn) => btn.querySelector("feGaussianBlur"))
 
     // Crear elementos de audio para los efectos de sonido
     const createAudio = (src) => {
@@ -31,19 +32,18 @@ export default function NeonStartupEffect() {
 
     // Función para apagar inicialmente todos los elementos
     const initiallyTurnOff = () => {
-      // Apagar el avatar
-      if (avatarCircle) {
-        avatarCircle.dataset.originalStroke = avatarCircle.getAttribute("stroke")
-        avatarCircle.dataset.originalFilter = avatarCircle.getAttribute("filter") || "url(#glow)"
-        avatarCircle.setAttribute("stroke", "rgba(0, 255, 255, 0.1)")
-        avatarCircle.setAttribute("filter", "none")
+      // Apagar el aro del avatar
+      if (avatarRing) {
+        avatarRing.dataset.originalStroke = avatarRing.getAttribute("stroke")
+        avatarRing.dataset.originalFilter = avatarRing.getAttribute("filter") || "url(#avatarGlow)"
+        avatarRing.setAttribute("stroke", "rgba(0, 255, 255, 0.1)")
+        avatarRing.setAttribute("filter", "none")
       }
 
       // Desaturar las imágenes del avatar (en lugar de ocultarlas)
       if (avatarImages && avatarImages.length > 0) {
         avatarImages.forEach((img) => {
-          // Ya no necesitamos cambiar la opacidad, el estilo inicial en AvatarNeon.jsx
-          // ya tiene el filtro de grayscale y brightness
+          // Ya tienen el filtro de grayscale y brightness aplicado por defecto
         })
       }
 
@@ -72,24 +72,47 @@ export default function NeonStartupEffect() {
       })
     }
 
-    // Función para encender el avatar con su aro
+    // Función para encender el avatar con su aro como un solo elemento
     const turnOnAvatar = () => {
       return new Promise((resolve) => {
-        if (avatarCircle) {
-          // Encender el aro neón
-          avatarCircle.setAttribute("stroke", avatarCircle.dataset.originalStroke)
-          avatarCircle.setAttribute("filter", avatarCircle.dataset.originalFilter)
+        // Reproducir sonido de encendido
+        flickerSound.currentTime = 0
+        flickerSound.play().catch((e) => console.log("Error reproduciendo sonido:", e))
+
+        // Preparar el glow antes de encender
+        if (avatarBlur) {
+          avatarBlur.setAttribute("stdDeviation", "8")
         }
 
-        // Encender las imágenes del avatar (quitar el filtro de grayscale) de golpe
+        // ENCENDER TODO SIMULTÁNEAMENTE
+        // 1. Encender el aro neón
+        if (avatarRing) {
+          avatarRing.setAttribute("stroke", avatarRing.dataset.originalStroke)
+          avatarRing.setAttribute("filter", avatarRing.dataset.originalFilter)
+        }
+
+        // 2. Encender las imágenes del avatar (quitar el filtro de grayscale) de golpe
         if (avatarImages && avatarImages.length > 0) {
           avatarImages.forEach((img) => {
-            img.style.filter = "none" // Quitar el filtro de grayscale inmediatamente
+            // Aplicar el filtro de drop-shadow inmediatamente junto con quitar el grayscale
+            img.style.filter = "drop-shadow(-1px 0 2px rgba(0, 255, 255, 0.9)) drop-shadow(1px 0 2px rgba(255, 0, 255, 0.7))"
           })
         }
 
-        // Resolver inmediatamente para que sea más brusco
-        setTimeout(resolve, 100) // Tiempo muy corto para que parezca instantáneo
+        // Iniciar la animación sincronizada del glow para el avatar y el aro
+        if (avatarBlur) {
+          // Animación del glow del aro
+          gsap.to(avatarBlur, {
+            attr: { stdDeviation: "5" },
+            repeat: -1,
+            yoyo: true,
+            duration: 2,
+            ease: "sine.inOut",
+          })
+        }
+
+        // Resolver inmediatamente
+        resolve()
       })
     }
 
@@ -271,6 +294,19 @@ export default function NeonStartupEffect() {
     const turnOnButtons = () => {
       return new Promise(async (resolve) => {
         if (buttonRects.length === 0) return resolve()
+
+        // Iniciar animación de glow para los botones
+        buttonBlurs.forEach((blur) => {
+          if (blur) {
+            gsap.to(blur, {
+              attr: { stdDeviation: "3" },
+              repeat: -1,
+              yoyo: true,
+              duration: 2,
+              ease: "sine.inOut",
+            })
+          }
+        })
 
         // Elegir un botón aleatorio para que falle
         const failingButtonIndex = Math.floor(Math.random() * buttonRects.length)

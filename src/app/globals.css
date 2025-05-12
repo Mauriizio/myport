@@ -2,13 +2,13 @@
 /* Estado inicial: avatar desaturado */
 .avatar-container img {
   filter: grayscale(90%) brightness(0.7);
-  transition: filter 0.1s ease; /* Transición rápida para encendido brusco */
+  transition: all 0s; /* Sin transición para encendido instantáneo */
 }
 
 /* Estado final: avatar encendido */
 .avatar-container.neon-on img {
   filter: none;
-  transition: filter 0.1s ease; /* Transición rápida para encendido brusco */
+  transition: all 0s; /* Sin transición para encendido instantáneo */
 }
 
 /* El resto del archivo globals.css se mantiene igual */
