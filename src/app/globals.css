@@ -1,16 +1,17 @@
-/* Añadir estas reglas al principio del archivo para asegurar que las imágenes del avatar estén ocultas inicialmente */
-/* Estado inicial: avatar oculto */
- .avatar-container.neon-off img {
-   opacity: 0;
-   transition: none;
- }
+/* Añadir estas reglas al principio del archivo para asegurar que las imágenes del avatar estén con el filtro adecuado inicialmente */
+/* Estado inicial: avatar desaturado */
+.avatar-container img {
+  filter: grayscale(90%) brightness(0.7);
+  transition: filter 0.1s ease; /* Transición rápida para encendido brusco */
+}
 
- /* Estado final: avatar encendido */
- .avatar-container.neon-on img {
-   opacity: 1;
-   transition: opacity 1s ease-in;
- }
+/* Estado final: avatar encendido */
+.avatar-container.neon-on img {
+  filter: none;
+  transition: filter 0.1s ease; /* Transición rápida para encendido brusco */
+}
 
+/* El resto del archivo globals.css se mantiene igual */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -174,14 +175,14 @@ body {
 .neon-text span:hover {
   color: #ff00ff !important; /* Forzar el color magenta en hover */
   text-shadow: 0 0 10px #ff00ff, 0 0 20px rgba(255, 0, 255, 0.5) !important; /* Forzar la sombra en hover */
-  transform: translateY(-5px);
+  transform: translateY(-1px);
 }
 
 /* Estilos para el subtítulo */
 .header p {
-  font-size: 1.5rem;
+  font-size: 3rem;
   color: #fff;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* Estilos para la fila de botones */
@@ -189,8 +190,8 @@ body {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem; /* Añadir margen inferior */
+  margin-top: 1rem;
+  margin-bottom: 3rem; /* Añadir margen inferior */
   flex-wrap: wrap;
 }
 
@@ -202,6 +203,7 @@ body {
   height: 150px;
   margin-bottom: 2rem;
   z-index: 2;
+  box-shadow: none !important;
 }
 
 .avatar-circle {

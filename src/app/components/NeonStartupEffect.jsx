@@ -8,7 +8,7 @@ export default function NeonStartupEffect() {
     const avatarElement = document.querySelector(".avatar-container") || document.querySelector("svg circle")
     const avatarCircle = avatarElement?.querySelector("circle") || avatarElement
 
-    // Todas las imágenes dentro del avatar (sin importar cuántas capas tenga)
+    // Todas las imágenes dentro del avatar
     const avatarImages = document.querySelectorAll(".avatar-container img")
 
     const titleElement = document.querySelector("h1.neon-text")
@@ -39,11 +39,11 @@ export default function NeonStartupEffect() {
         avatarCircle.setAttribute("filter", "none")
       }
 
-      // Ocultar TODAS las imágenes del avatar
+      // Desaturar las imágenes del avatar (en lugar de ocultarlas)
       if (avatarImages && avatarImages.length > 0) {
         avatarImages.forEach((img) => {
-          img.style.transition = "none"
-          img.style.opacity = "0" // Aseguramos que todas las imágenes estén ocultas
+          // Ya no necesitamos cambiar la opacidad, el estilo inicial en AvatarNeon.jsx
+          // ya tiene el filtro de grayscale y brightness
         })
       }
 
@@ -81,17 +81,127 @@ export default function NeonStartupEffect() {
           avatarCircle.setAttribute("filter", avatarCircle.dataset.originalFilter)
         }
 
-        // Mostrar todas las imágenes del avatar gradualmente
+        // Encender las imágenes del avatar (quitar el filtro de grayscale) de golpe
         if (avatarImages && avatarImages.length > 0) {
           avatarImages.forEach((img) => {
-            img.style.transition = "opacity 1s ease-in"
-            img.style.opacity = "1"
+            img.style.filter = "none" // Quitar el filtro de grayscale inmediatamente
           })
         }
 
-        // Resolver después de 1 segundo
-        setTimeout(resolve, 1000)
+        // Resolver inmediatamente para que sea más brusco
+        setTimeout(resolve, 100) // Tiempo muy corto para que parezca instantáneo
       })
+    }
+
+    // Función para hacer parpadear una letra específica del título con estados apagados
+    const flickerSpecificLetter = (letterIndex, shouldStayOff = false) => {
+      if (titleSpans.length === 0 || letterIndex === undefined) return
+
+      const targetLetter = titleSpans[letterIndex]
+
+      // Guardar los estilos originales si no existen
+      if (!targetLetter.dataset.originalColor) {
+        targetLetter.dataset.originalColor = getComputedStyle(targetLetter).color
+        targetLetter.dataset.originalShadow = getComputedStyle(targetLetter).textShadow
+      }
+
+      // Hacer parpadear la letra
+      let flickerCount = 0
+      const maxFlickers = 2 + Math.floor(Math.random() * 2) // 2-3 parpadeos
+
+      const flickerLetter = () => {
+        // Reproducir sonido de parpadeo
+        flickerSound.currentTime = 0
+        flickerSound.play().catch((e) => console.log("Error reproduciendo sonido:", e))
+
+        // Apagar
+        targetLetter.style.color = "rgba(255, 255, 255, 0.1)"
+        targetLetter.style.textShadow = "none"
+
+        setTimeout(
+          () => {
+            // Encender
+            targetLetter.style.color = targetLetter.dataset.originalColor
+            targetLetter.style.textShadow = targetLetter.dataset.originalShadow
+
+            flickerCount++
+
+            if (flickerCount < maxFlickers) {
+              // Continuar parpadeando
+              setTimeout(flickerLetter, 100 + Math.random() * 150)
+            } else {
+              // Después de parpadear, decidir si se queda apagado o encendido
+              if (shouldStayOff) {
+                setTimeout(() => {
+                  // Apagar la letra por un tiempo
+                  targetLetter.style.color = "rgba(255, 255, 255, 0.1)"
+                  targetLetter.style.textShadow = "none"
+                }, 200)
+              }
+            }
+          },
+          50 + Math.random() * 100,
+        )
+      }
+
+      // Iniciar el parpadeo
+      flickerLetter()
+    }
+
+    // Función para hacer parpadear un botón específico con estados apagados
+    const flickerSpecificButton = (buttonIndex, shouldStayOff = false) => {
+      if (buttonRects.length === 0 || buttonIndex === undefined || buttonIndex === -1) return
+
+      const targetRect = buttonRects[buttonIndex]
+      if (!targetRect) return
+
+      // Guardar los estilos originales si no existen
+      if (!targetRect.dataset.originalStroke) {
+        targetRect.dataset.originalStroke = targetRect.getAttribute("stroke")
+        targetRect.dataset.originalFilter = targetRect.getAttribute("filter") || "url(#glow)"
+      }
+
+      // Hacer parpadear el botón
+      let flickerCount = 0
+      const maxFlickers = 2 + Math.floor(Math.random() * 2) // 2-3 parpadeos
+
+      const flickerButton = () => {
+        // Reproducir sonido de parpadeo
+        flickerSound.currentTime = 0
+        flickerSound.play().catch((e) => console.log("Error reproduciendo sonido:", e))
+
+        // Apagar
+        targetRect.setAttribute("stroke", "rgba(0, 255, 255, 0.1)")
+        targetRect.setAttribute("filter", "none")
+
+        setTimeout(
+          () => {
+            // Encender
+            targetRect.setAttribute("stroke", targetRect.dataset.originalStroke)
+            targetRect.setAttribute("filter", targetRect.dataset.originalFilter)
+
+            flickerCount++
+
+            if (flickerCount < maxFlickers) {
+              // Continuar parpadeando
+              setTimeout(flickerButton, 100 + Math.random() * 150)
+            } else {
+              // Después de parpadear, decidir si se queda apagado o encendido
+              if (shouldStayOff) {
+                setTimeout(() => {
+                  // Apagar el botón por un tiempo
+                  targetRect.setAttribute("stroke", "rgba(0, 255, 255, 0.1)")
+                  targetRect.setAttribute("filter", "none")
+                }, 200)
+              }
+            }
+          },
+          50 + Math.random() * 100,
+        )
+      }
+
+      // Iniciar el parpadeo
+      flickerButton()
     }
 
     // Función para encender todas las letras del título, con una fallando
@@ -223,6 +333,44 @@ export default function NeonStartupEffect() {
       })
     }
 
+    // Configurar parpadeos periódicos después del encendido inicial
+    const setupPeriodicFlickers = () => {
+      // Elegir una letra aleatoria para que parpadee periódicamente (evitando espacios)
+      let permanentFlickerLetterIndex
+      if (titleSpans.length > 0) {
+        do {
+          permanentFlickerLetterIndex = Math.floor(Math.random() * titleSpans.length)
+        } while (titleSpans[permanentFlickerLetterIndex].textContent.trim() === "")
+      }
+
+      // Elegir un botón aleatorio para que parpadee periódicamente
+      const permanentFlickerButtonIndex = buttonRects.length > 0 ? Math.floor(Math.random() * buttonRects.length) : -1
+
+      // Estado para alternar entre encendido y apagado
+      let letterIsOff = false
+      let buttonIsOff = false
+
+      // Parpadeo periódico de la letra permanente
+      setInterval(
+        () => {
+          // Alternar entre parpadeo que deja la letra encendida o apagada
+          letterIsOff = !letterIsOff
+          flickerSpecificLetter(permanentFlickerLetterIndex, letterIsOff)
+        },
+        5000 + Math.random() * 3000,
+      )
+
+      // Parpadeo periódico del botón permanente
+      setInterval(
+        () => {
+          // Alternar entre parpadeo que deja el botón encendido o apagado
+          buttonIsOff = !buttonIsOff
+          flickerSpecificButton(permanentFlickerButtonIndex, buttonIsOff)
+        },
+        8000 + Math.random() * 4000,
+      )
+    }
+
     // Secuencia de encendido principal
     const startupSequence = async () => {
       // Apagar todo inicialmente
@@ -239,6 +387,9 @@ export default function NeonStartupEffect() {
 
       // Encender los botones uno a uno, con uno fallando
       await turnOnButtons()
+
+      // Configurar parpadeos periódicos después del encendido inicial
+      setupPeriodicFlickers()
     }
 
     // Iniciar la secuencia

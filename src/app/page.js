@@ -1,7 +1,10 @@
-import ParticlesBackground from "./components/ParticlesBackground"
+"use client"
+
 import AvatarNeon from "./components/AvatarNeon"
-import ButtonsRow from "./components/ButtonsRow"
 import NeonStartupEffect from "./components/NeonStartupEffect"
+import ParticlesBackground from "./components/ParticlesBackground"
+import ButtonsRow from "./components/ButtonsRow"
+import "./globals.css"
 
 export default function HomePage() {
   return (
