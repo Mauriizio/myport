@@ -95,7 +95,7 @@ export default function NeonStartupEffect() {
         if (avatarImages && avatarImages.length > 0) {
           avatarImages.forEach((img) => {
             // Aplicar el filtro de drop-shadow inmediatamente junto con quitar el grayscale
-            img.style.filter = "drop-shadow(-1px 0 2px rgba(0, 255, 255, 0.9)) drop-shadow(1px 0 2px rgba(255, 0, 255, 0.7))"
+            img.style.filter = "drop-shadow(-2px 0 1px rgba(0, 255, 255, 1)) drop-shadow(2px 0 1px rgba(255, 0, 255, 1))"
           })
         }
 

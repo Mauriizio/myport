@@ -60,7 +60,10 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
           {/* Degradado horizontal: izquierda cyan, derecha magenta */}
           <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#00FFFF" />
+            <stop offset="40%" stopColor="#00FFFF" />
+            <stop offset="60%" stopColor="#FF00FF" />
             <stop offset="100%" stopColor="#FF00FF" />
+
           </linearGradient>
 
           <filter id="avatarGlow" x="-100%" y="-100%" width="300%" height="300%">
