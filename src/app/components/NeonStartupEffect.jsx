@@ -79,64 +79,65 @@ export default function NeonStartupEffect() {
     }
 
     // Función para encender el avatar con su aro como un solo elemento
-    // Modificación para NeonStartupEffect.jsx - función turnOnAvatar()
-const turnOnAvatar = () => {
-  return new Promise((resolve) => {
-    // Reproducir sonido de encendido
-    flickerSound.currentTime = 0
-    flickerSound.play().catch((e) => console.log("Error reproduciendo sonido:", e))
+    const turnOnAvatar = () => {
+      return new Promise((resolve) => {
+        // Reproducir sonido de encendido
+        flickerSound.currentTime = 0
+        flickerSound.play().catch((e) => console.log("Error reproduciendo sonido:", e))
 
-    // Preparar el glow antes de encender
-    if (avatarBlur) {
-      avatarBlur.setAttribute("stdDeviation", "8")
-    }
+        // Preparar el glow antes de encender
+        if (avatarBlur) {
+          avatarBlur.setAttribute("stdDeviation", "8")
+        }
 
-    // IMPORTANTE: Primero preparamos todo antes de hacer cambios visibles
-    
-    // 1. Preparar el aro neón
-    let originalStroke, originalFilter
-    if (avatarRing) {
-      originalStroke = avatarRing.dataset.originalStroke || "#00ffff"
-      originalFilter = avatarRing.dataset.originalFilter || "url(#avatarGlow)"
-    }
-    
-    // 2. Ahora aplicamos todos los cambios visibles de una vez
-    
-    // Añadir clase para el estado encendido - ESTO ACTIVARÁ LAS REGLAS CSS
-    if (avatarContainer) {
-      avatarContainer.classList.add("neon-on")
-    }
-    
-    // Encender el aro neón
-    if (avatarRing) {
-      avatarRing.setAttribute("stroke", originalStroke)
-      avatarRing.setAttribute("filter", originalFilter)
-    }
-    
-    // NO modificamos directamente los filtros de las imágenes
-    // La clase CSS .neon-on se encargará de quitar el filtro grayscale
-    
-    // Asegurarse de que los contenedores mantengan sus máscaras de degradado
-    if (baseImageContainer) {
-      baseImageContainer.style.maskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
-      baseImageContainer.style.WebkitMaskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
-    }
-    
-    // Iniciar la animación del glow para el avatar y el aro
-    if (avatarBlur) {
-      gsap.to(avatarBlur, {
-        attr: { stdDeviation: "5" },
-        repeat: -1,
-        yoyo: true,
-        duration: 2,
-        ease: "sine.inOut",
+        // Añadir clase para el estado encendido
+        if (avatarContainer) {
+          avatarContainer.classList.add("neon-on")
+        }
+
+        // ENCENDER TODO SIMULTÁNEAMENTE
+        // 1. Encender el aro neón
+        if (avatarRing) {
+          avatarRing.setAttribute("stroke", avatarRing.dataset.originalStroke || "#00ffff")
+          avatarRing.setAttribute("filter", avatarRing.dataset.originalFilter || "url(#avatarGlow)")
+        }
+
+        // 2. Encender las imágenes del avatar (quitar el filtro de grayscale) de golpe
+        if (avatarImages && avatarImages.length > 0) {
+          // Aplicar diferentes efectos a las imágenes según su posición
+          avatarImages.forEach((img, index) => {
+            if (img.classList.contains("avatar-image-top")) {
+              // Imagen superior (cabeza) - aplicar sombra completa
+              img.style.filter = "none" // Quitar todos los filtros
+            } else if (img.classList.contains("avatar-image-base")) {
+              // Imagen base (cuerpo) - sin sombra, solo quitar el grayscale
+              img.style.filter = "none" // Quitar todos los filtros
+            }
+          })
+        }
+
+        // Asegurarse de que los contenedores mantengan sus máscaras de degradado
+        if (baseImageContainer) {
+          baseImageContainer.style.maskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
+          baseImageContainer.style.WebkitMaskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
+        }
+
+        // Iniciar la animación sincronizada del glow para el avatar y el aro
+        if (avatarBlur) {
+          // Animación del glow del aro
+          gsap.to(avatarBlur, {
+            attr: { stdDeviation: "5" },
+            repeat: -1,
+            yoyo: true,
+            duration: 2,
+            ease: "sine.inOut",
+          })
+        }
+
+        // Resolver inmediatamente
+        resolve()
       })
     }
-    
-    // Resolver inmediatamente
-    resolve()
-  })
-}
 
     // Función para hacer parpadear una letra específica del título con estados apagados
     const flickerSpecificLetter = (letterIndex, shouldStayOff = false) => {
