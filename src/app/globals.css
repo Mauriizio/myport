@@ -41,7 +41,7 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-neon), sans-serif;
   background: radial-gradient(circle at center, #1a1a2e 0%, #0d0d1a 40%, #00000f 100%);
   color: #fff;
   margin: 0;
@@ -182,13 +182,16 @@ body {
 }
 
 /* Estilos para el título neón */
+/* Modificar la regla existente para el texto neón */
 .neon-text {
+  font-family: var(--font-orbitron), sans-serif !important; /* Usar !important para asegurar que se aplique */
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: 700; /* Usar un peso disponible */
   color: #00ffff;
   text-shadow: 0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.5);
   margin-bottom: 1rem;
   line-height: 1.2;
+  letter-spacing: 2px; /* Espaciado entre letras para mejor efecto neón */
 }
 
 .neon-text span {

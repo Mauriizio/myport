@@ -16,7 +16,13 @@ export default function HomePage() {
         <ParticlesBackground />
         <AvatarNeon />
 
-        <h1 className="neon-text">
+        <h1 
+          className="neon-text" 
+          style={{ 
+            fontFamily: "var(--font-orbitron)", 
+            fontWeight: 700  // Asegurarse de usar un peso disponible
+          }}
+        >
           {"MAURIZIO CABALLERO".split(" ").map((word, w) => (
             <div key={w} style={{ display: "block" }}>
               {word.split("").map((char, i) => (
