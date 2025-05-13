@@ -7,14 +7,18 @@ export default function NeonStartupEffect() {
   useEffect(() => {
     // Elementos que queremos encender
     const avatarContainer = document.querySelector(".avatar-container")
-    const avatarRing = document.querySelector(".avatar-ring")
+    const avatarRing = document.querySelector(".avatar-ring") || document.getElementById("avatar-ring")
     const avatarImages = document.querySelectorAll(".avatar-container img")
     const avatarBlur = document.getElementById("avatarBlur")
+
+    // Obtener los contenedores de las imágenes
+    const baseImageContainer = document.querySelector(".avatar-container > div:first-of-type")
+    const topImageContainer = document.querySelector(".avatar-container > div:last-of-type")
 
     const titleElement = document.querySelector("h1.neon-text")
     const titleSpans = titleElement ? Array.from(titleElement.querySelectorAll("span")) : []
 
-    const buttonElements = Array.from(document.querySelectorAll(".button-row svg")) || []
+    const buttonElements = Array.from(document.querySelectorAll(".neon-button-svg svg")) || []
     const buttonRects = buttonElements.map((btn) => btn.querySelector("rect"))
     const buttonBlurs = buttonElements.map((btn) => btn.querySelector("feGaussianBlur"))
 
@@ -27,7 +31,7 @@ export default function NeonStartupEffect() {
     }
 
     // Efectos de sonido
-    const flickerSound = createAudio("/sounds/electric-flicker.mp3")
+    const flickerSound = createAudio("/sounds/flicker.mp3")
     flickerSound.volume = 0.3 // Ajustar volumen
 
     // Función para apagar inicialmente todos los elementos
@@ -44,6 +48,8 @@ export default function NeonStartupEffect() {
       if (avatarImages && avatarImages.length > 0) {
         avatarImages.forEach((img) => {
           // Ya tienen el filtro de grayscale y brightness aplicado por defecto
+          img.style.transition = "all 0s"
+          img.style.filter = "grayscale(100%) brightness(0.6)"
         })
       }
 
@@ -84,19 +90,36 @@ export default function NeonStartupEffect() {
           avatarBlur.setAttribute("stdDeviation", "8")
         }
 
+        // Añadir clase para el estado encendido
+        if (avatarContainer) {
+          avatarContainer.classList.add("neon-on")
+        }
+
         // ENCENDER TODO SIMULTÁNEAMENTE
         // 1. Encender el aro neón
         if (avatarRing) {
-          avatarRing.setAttribute("stroke", avatarRing.dataset.originalStroke)
-          avatarRing.setAttribute("filter", avatarRing.dataset.originalFilter)
+          avatarRing.setAttribute("stroke", avatarRing.dataset.originalStroke || "#00ffff")
+          avatarRing.setAttribute("filter", avatarRing.dataset.originalFilter || "url(#avatarGlow)")
         }
 
         // 2. Encender las imágenes del avatar (quitar el filtro de grayscale) de golpe
         if (avatarImages && avatarImages.length > 0) {
-          avatarImages.forEach((img) => {
-            // Aplicar el filtro de drop-shadow inmediatamente junto con quitar el grayscale
-            img.style.filter = "drop-shadow(-2px 0 1px rgba(0, 255, 255, 1)) drop-shadow(2px 0 1px rgba(255, 0, 255, 1))"
+          // Aplicar diferentes efectos a las imágenes según su posición
+          avatarImages.forEach((img, index) => {
+            if (img.classList.contains("avatar-image-top")) {
+              // Imagen superior (cabeza) - aplicar sombra completa
+              img.style.filter = "none" // Quitar todos los filtros
+            } else if (img.classList.contains("avatar-image-base")) {
+              // Imagen base (cuerpo) - sin sombra, solo quitar el grayscale
+              img.style.filter = "none" // Quitar todos los filtros
+            }
           })
+        }
+
+        // Asegurarse de que los contenedores mantengan sus máscaras de degradado
+        if (baseImageContainer) {
+          baseImageContainer.style.maskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
+          baseImageContainer.style.WebkitMaskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
         }
 
         // Iniciar la animación sincronizada del glow para el avatar y el aro
@@ -238,6 +261,9 @@ export default function NeonStartupEffect() {
           failingLetterIndex = Math.floor(Math.random() * titleSpans.length)
         } while (titleSpans[failingLetterIndex].textContent.trim() === "")
 
+        // Guardar el índice para uso posterior
+        window.permanentFlickerLetterIndex = failingLetterIndex
+
         // Encender todas las letras excepto la que falla
         titleSpans.forEach((span, index) => {
           if (index !== failingLetterIndex) {
@@ -311,6 +337,9 @@ export default function NeonStartupEffect() {
         // Elegir un botón aleatorio para que falle
         const failingButtonIndex = Math.floor(Math.random() * buttonRects.length)
 
+        // Guardar el índice para uso posterior
+        window.permanentFlickerButtonIndex = failingButtonIndex
+
         // Encender los botones uno a uno
         for (let i = 0; i < buttonRects.length; i++) {
           const rect = buttonRects[i]
@@ -371,16 +400,21 @@ export default function NeonStartupEffect() {
 
     // Configurar parpadeos periódicos después del encendido inicial
     const setupPeriodicFlickers = () => {
-      // Elegir una letra aleatoria para que parpadee periódicamente (evitando espacios)
-      let permanentFlickerLetterIndex
-      if (titleSpans.length > 0) {
+      // Usar el mismo índice de letra que falló durante el encendido
+      let permanentFlickerLetterIndex = window.permanentFlickerLetterIndex
+      if (permanentFlickerLetterIndex === undefined && titleSpans.length > 0) {
         do {
           permanentFlickerLetterIndex = Math.floor(Math.random() * titleSpans.length)
         } while (titleSpans[permanentFlickerLetterIndex].textContent.trim() === "")
       }
 
-      // Elegir un botón aleatorio para que parpadee periódicamente
-      const permanentFlickerButtonIndex = buttonRects.length > 0 ? Math.floor(Math.random() * buttonRects.length) : -1
+      // Usar el mismo índice de botón que falló durante el encendido
+      const permanentFlickerButtonIndex =
+        window.permanentFlickerButtonIndex !== undefined
+          ? window.permanentFlickerButtonIndex
+          : buttonRects.length > 0
+            ? Math.floor(Math.random() * buttonRects.length)
+            : -1
 
       // Estado para alternar entre encendido y apagado
       let letterIsOff = false

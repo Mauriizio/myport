@@ -1,8 +1,16 @@
-/* Añadir estas reglas al principio del archivo para asegurar que las imágenes del avatar estén con el filtro adecuado inicialmente */
+/* Añadir estas reglas al principio del archivo para asegurar que las imágenes del avatar tengan el efecto de difuminado */
+.avatar-container {
+  position: relative;
+  margin: 0 auto;
+  z-index: 2;
+  background: transparent !important; /* Forzar fondo transparente */
+}
+
 /* Estado inicial: avatar desaturado */
 .avatar-container img {
   filter: grayscale(90%) brightness(0.7);
   transition: all 0s; /* Sin transición para encendido instantáneo */
+  background: transparent !important; /* Forzar fondo transparente */
 }
 
 /* Estado final: avatar encendido */
@@ -11,7 +19,23 @@
   transition: all 0s; /* Sin transición para encendido instantáneo */
 }
 
-/* El resto del archivo globals.css se mantiene igual */
+/* Asegurarse de que no haya fondos no deseados */
+.avatar-image-base,
+.avatar-image-top {
+  background: transparent !important;
+}
+
+/* Asegurarse de que los contenedores de imágenes también sean transparentes */
+.avatar-container > div {
+  background: transparent !important;
+}
+
+/* Asegurarse de que la máscara de degradado se mantenga incluso después de encenderse */
+.avatar-container > div:first-of-type {
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%) !important;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%) !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -203,7 +227,6 @@ body {
   height: 150px;
   margin-bottom: 2rem;
   z-index: 2;
-  box-shadow: none !important;
 }
 
 .avatar-circle {
@@ -565,3 +588,28 @@ footer {
     padding: 1rem;
   }
 }
+
+.avatar-glow-effect {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 255, 255, 0.4), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+} 
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+  }
+}
+
+.avatar-glow-effect {
+  animation: pulseGlow 2s infinite;
+}
+
