@@ -8,7 +8,7 @@
 
 /* Estado inicial: avatar desaturado */
 .avatar-container img {
-  filter: grayscale(90%) brightness(0.7);
+  filter: none;
   transition: all 0s; /* Sin transición para encendido instantáneo */
   background: transparent !important; /* Forzar fondo transparente */
 }

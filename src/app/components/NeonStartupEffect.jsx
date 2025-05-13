@@ -34,22 +34,17 @@ export default function NeonStartupEffect() {
     const flickerSound = createAudio("/sounds/flicker.mp3")
     flickerSound.volume = 0.3 // Ajustar volumen
 
-    // Función para apagar inicialmente todos los elementos
+    // Función para apagar inicialmente solo el texto y los botones (no el avatar)
     const initiallyTurnOff = () => {
-      // Apagar el aro del avatar
-      if (avatarRing) {
-        avatarRing.dataset.originalStroke = avatarRing.getAttribute("stroke")
-        avatarRing.dataset.originalFilter = avatarRing.getAttribute("filter") || "url(#avatarGlow)"
-        avatarRing.setAttribute("stroke", "rgba(0, 255, 255, 0.1)")
-        avatarRing.setAttribute("filter", "none")
-      }
-
-      // Desaturar las imágenes del avatar (en lugar de ocultarlas)
-      if (avatarImages && avatarImages.length > 0) {
-        avatarImages.forEach((img) => {
-          // Ya tienen el filtro de grayscale y brightness aplicado por defecto
-          img.style.transition = "all 0s"
-          img.style.filter = "grayscale(100%) brightness(0.6)"
+      // El avatar ya está encendido desde el inicio, no lo apagamos
+      // Iniciamos la animación del glow para el avatar
+      if (avatarBlur) {
+        gsap.to(avatarBlur, {
+          attr: { stdDeviation: "5" },
+          repeat: -1,
+          yoyo: true,
+          duration: 2,
+          ease: "sine.inOut",
         })
       }
 
@@ -75,67 +70,6 @@ export default function NeonStartupEffect() {
           rect.setAttribute("stroke", "rgba(0, 255, 255, 0.1)")
           rect.setAttribute("filter", "none")
         }
-      })
-    }
-
-    // Función para encender el avatar con su aro como un solo elemento
-    const turnOnAvatar = () => {
-      return new Promise((resolve) => {
-        // Reproducir sonido de encendido
-        flickerSound.currentTime = 0
-        flickerSound.play().catch((e) => console.log("Error reproduciendo sonido:", e))
-
-        // Preparar el glow antes de encender
-        if (avatarBlur) {
-          avatarBlur.setAttribute("stdDeviation", "8")
-        }
-
-        // Añadir clase para el estado encendido
-        if (avatarContainer) {
-          avatarContainer.classList.add("neon-on")
-        }
-
-        // ENCENDER TODO SIMULTÁNEAMENTE
-        // 1. Encender el aro neón
-        if (avatarRing) {
-          avatarRing.setAttribute("stroke", avatarRing.dataset.originalStroke || "#00ffff")
-          avatarRing.setAttribute("filter", avatarRing.dataset.originalFilter || "url(#avatarGlow)")
-        }
-
-        // 2. Encender las imágenes del avatar (quitar el filtro de grayscale) de golpe
-        if (avatarImages && avatarImages.length > 0) {
-          // Aplicar diferentes efectos a las imágenes según su posición
-          avatarImages.forEach((img, index) => {
-            if (img.classList.contains("avatar-image-top")) {
-              // Imagen superior (cabeza) - aplicar sombra completa
-              img.style.filter = "none" // Quitar todos los filtros
-            } else if (img.classList.contains("avatar-image-base")) {
-              // Imagen base (cuerpo) - sin sombra, solo quitar el grayscale
-              img.style.filter = "none" // Quitar todos los filtros
-            }
-          })
-        }
-
-        // Asegurarse de que los contenedores mantengan sus máscaras de degradado
-        if (baseImageContainer) {
-          baseImageContainer.style.maskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
-          baseImageContainer.style.WebkitMaskImage = "linear-gradient(to bottom, black 80%, transparent 100%)"
-        }
-
-        // Iniciar la animación sincronizada del glow para el avatar y el aro
-        if (avatarBlur) {
-          // Animación del glow del aro
-          gsap.to(avatarBlur, {
-            attr: { stdDeviation: "5" },
-            repeat: -1,
-            yoyo: true,
-            duration: 2,
-            ease: "sine.inOut",
-          })
-        }
-
-        // Resolver inmediatamente
-        resolve()
       })
     }
 
@@ -443,14 +377,13 @@ export default function NeonStartupEffect() {
 
     // Secuencia de encendido principal
     const startupSequence = async () => {
-      // Apagar todo inicialmente
+      // Apagar solo el texto y los botones inicialmente (no el avatar)
       initiallyTurnOff()
 
-      // Esperar 1 segundo en la oscuridad
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Esperar un poco menos de tiempo en la oscuridad ya que el avatar está encendido
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-      // Encender el avatar con su aro
-      await turnOnAvatar()
+      // El avatar ya está encendido, no necesitamos encenderlo
 
       // Encender el título con una letra fallando
       await turnOnTitle()

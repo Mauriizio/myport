@@ -18,7 +18,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
 
   return (
     <div
-      className="avatar-container" 
+      className="avatar-container neon-on" // Añadido 'neon-on' para que aparezca encendido desde el inicio
       style={{
         position: "relative",
         width: totalWidth,
@@ -59,23 +59,22 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
         }}
       >
         <img
-  ref={baseImageRef}
-  src={src || "/placeholder.svg?height=200&width=200"}
-  alt="Avatar fondo"
-  style={{
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    objectPosition: "center",
-    background: "transparent",
-    filter: "grayscale(90%) brightness(0.7)", // Añadir el mismo filtro que tiene la imagen superior
-    transition: "all 0s",
-    maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-    WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-  }}
-  className="avatar-image-base"
-/>
-
+          ref={baseImageRef}
+          src={src || "/placeholder.svg?height=200&width=200"}
+          alt="Avatar fondo"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            background: "transparent",
+            filter: "none", // Cambiado de grayscale a none para que aparezca encendido
+            transition: "all 0s",
+            maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+          }}
+          className="avatar-image-base"
+        />
       </div>
 
       {/* Aro con degradado estático y glow fuerte */}
@@ -117,16 +116,16 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
           cy={totalWidth / 2} // Centrar verticalmente en el SVG
           r={radius + 10} // Aumentar ligeramente el radio para que el aro sea más grande
           fill="none"
-          stroke="url(#avatarGrad)"
+          stroke="url(#avatarGrad)" // Ya está encendido desde el inicio
           strokeWidth="5"
-          filter="url(#avatarGlow)"
+          filter="url(#avatarGlow)" // Ya tiene el glow desde el inicio
           className="avatar-ring"
           id="avatar-ring"
           style={{ transition: "all 0s" }} // Sin transición para encendido instantáneo
         />
       </svg>
 
-      {/* Parte superior recortada por encima del aro - Inicialmente desaturada */}
+      {/* Parte superior recortada por encima del aro - Ya encendida desde el inicio */}
       <div
         style={{
           position: "absolute",
@@ -149,7 +148,7 @@ export default function AvatarNeon({ src = "/mi-avatar.png", size = 200 }) {
             height: "100%",
             objectFit: "cover",
             objectPosition: "center", // Centrar la imagen
-            filter: "grayscale(90%) brightness(0.7)", // Inicialmente desaturada y oscura
+            filter: "none", // Cambiado de grayscale a none para que aparezca encendido
             transition: "all 0s", // Sin transición para encendido instantáneo
             background: "transparent", // Fondo transparente
           }}
