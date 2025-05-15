@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 import gsap from "gsap"
 
+
 export default function NeonStartupEffect() {
   useEffect(() => {
     // Elementos que queremos encender

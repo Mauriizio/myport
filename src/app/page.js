@@ -6,6 +6,7 @@ import ParticlesBackground from "./components/ParticlesBackground"
 import ButtonsRow from "./components/ButtonsRow"
 import "./globals.css"
 
+
 export default function HomePage() {
   return (
     <div className="container">
@@ -34,9 +35,11 @@ export default function HomePage() {
           ))}
         </h1>
 
-        <p>Frontend Developer</p>
+        <h2>Frontend Developer</h2>
         <ButtonsRow />
       </header>
+
+     
     </div>
   )
 }
