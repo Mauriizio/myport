@@ -4,8 +4,11 @@ import AvatarNeon from "./components/AvatarNeon"
 import NeonStartupEffect from "./components/NeonStartupEffect"
 import ParticlesBackground from "./components/ParticlesBackground"
 import ButtonsRow from "./components/ButtonsRow"
+import AboutSection from "./components/AboutSection"
+import ProjectsSection from "./components/ProjectsSection"
+import ContactSection from "./components/ContactSection"
+import Footer from "./components/Footer"
 import "./globals.css"
-
 
 export default function HomePage() {
   return (
@@ -17,11 +20,11 @@ export default function HomePage() {
         <ParticlesBackground />
         <AvatarNeon />
 
-        <h1 
-          className="neon-text" 
-          style={{ 
-            fontFamily: "var(--font-orbitron)", 
-            fontWeight: 700  // Asegurarse de usar un peso disponible
+        <h1
+          className="neon-text"
+          style={{
+            fontFamily: "var(--font-orbitron)",
+            fontWeight: 700,
           }}
         >
           {"MAURIZIO CABALLERO".split(" ").map((word, w) => (
@@ -39,7 +42,11 @@ export default function HomePage() {
         <ButtonsRow />
       </header>
 
-     
+      {/* Secciones con contenido completo */}
+      <AboutSection />
+      <ProjectsSection />
+      <ContactSection />
+      <Footer />
     </div>
   )
 }

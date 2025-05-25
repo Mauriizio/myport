@@ -1,281 +1,146 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { Code, Cpu, Layers, Lightbulb, Monitor, Rocket } from "lucide-react"
+import { motion } from "framer-motion"
+import { Code, Palette, Zap, Brain, Coffee, Gamepad2 } from "lucide-react"
 
 export default function AboutSection() {
-  const sectionRef = useRef(null)
-  const skillsRef = useRef(null)
+  const skills = [
+    { name: "JavaScript", level: 85, color: "#f7df1e" },
+    { name: "React", level: 80, color: "#61dafb" },
+    { name: "CSS/SCSS", level: 90, color: "#1572b6" },
+    { name: "HTML5", level: 95, color: "#e34f26" },
+    { name: "Node.js", level: 70, color: "#339933" },
+    { name: "Git", level: 75, color: "#f05032" },
+  ]
 
-  // Efecto para animar la aparición de elementos cuando están en el viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("neon-on")
-            entry.target.classList.remove("neon-off")
-          }
-        })
-      },
-      { threshold: 0.2 },
-    )
-
-    // Observar la sección principal
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    // Observar las tarjetas de habilidades
-    if (skillsRef.current) {
-      const skillCards = skillsRef.current.querySelectorAll(".skill-card")
-      skillCards.forEach((card) => {
-        observer.observe(card)
-      })
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
+  const interests = [
+    { icon: Code, title: "Desarrollo Web", desc: "Creando experiencias digitales únicas" },
+    { icon: Palette, title: "UI/UX Design", desc: "Diseños que conectan con usuarios" },
+    { icon: Zap, title: "Animaciones", desc: "Dando vida a las interfaces" },
+    { icon: Brain, title: "Aprendizaje", desc: "Siempre explorando nuevas tecnologías" },
+    { icon: Coffee, title: "Café", desc: "Combustible para largas sesiones de código" },
+    { icon: Gamepad2, title: "Gaming", desc: "Inspiración para interfaces interactivas" },
+  ]
 
   return (
-    <section
-      ref={sectionRef}
-      className="about-section parallax-section neon-off"
-      style={{
-        minHeight: "100vh",
-        padding: "4rem 2rem",
-        position: "relative",
-        overflow: "hidden",
-      }}
+    <motion.section
+      id="sobremi"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen section-container py-20"
     >
-      {/* Fondo con degradado */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: "radial-gradient(circle at center, #1a1a2e 0%, #0d0d1a 40%, #00000f 100%)",
-          opacity: 0.8,
-        }}
-      />
-
-      <div className="section-content relative z-10 max-w-6xl mx-auto">
-        <h2
-          className="neon-text text-center mb-12"
-          style={{
-            fontFamily: "var(--font-orbitron), sans-serif",
-            fontSize: "3rem",
-            color: "#00ffff",
-            textShadow: "0 0 10px #00ffff, 0 0 20px rgba(0, 255, 255, 0.5)",
-            letterSpacing: "8px",
-          }}
+      <div className="max-w-6xl mx-auto">
+        <motion.h2
+          className="section-title text-5xl mb-16"
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
         >
-          {"SOBRE MÍ".split("").map((char, i) => (
-            <span key={i} style={{ "--char-index": i }}>
-              {char}
-            </span>
-          ))}
-        </h2>
+          Sobre mí
+        </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Columna de texto */}
-          <div className="space-y-6">
-            <p className="text-white text-lg leading-relaxed">
-              Soy un <span className="neon-highlight">desarrollador frontend</span> apasionado por crear experiencias
-              digitales que combinan diseño atractivo y funcionalidad intuitiva. Mi enfoque se centra en construir
-              interfaces que no solo se vean bien, sino que también ofrezcan una excelente experiencia de usuario.
-            </p>
-
-            <p className="text-white text-lg leading-relaxed">
-              Con experiencia en <span className="neon-highlight">React</span>,{" "}
-              <span className="neon-highlight">Next.js</span> y otras tecnologías modernas, me especializo en
-              desarrollar aplicaciones web responsivas y de alto rendimiento que destacan en el panorama digital actual.
-            </p>
-
-            <p className="text-white text-lg leading-relaxed">
-              Mi objetivo es seguir creciendo profesionalmente, aprendiendo nuevas tecnologías y enfrentando desafíos
-              que me permitan expandir mis habilidades y conocimientos en el mundo del desarrollo web.
-            </p>
-
-            <div className="pt-4">
-              <button className="neon-button mt-4" onClick={() => alert("¡Descarga mi CV!")}>
-                Descargar CV
-              </button>
-            </div>
-          </div>
-
-          {/* Columna de habilidades */}
-          <div ref={skillsRef} className="grid grid-cols-2 gap-4">
-            {[
-              {
-                icon: <Monitor className="h-8 w-8" />,
-                title: "Frontend",
-                skills: "React, Next.js, HTML5, CSS3, JavaScript",
-              },
-              {
-                icon: <Code className="h-8 w-8" />,
-                title: "Lenguajes",
-                skills: "JavaScript, TypeScript, Python",
-              },
-              {
-                icon: <Layers className="h-8 w-8" />,
-                title: "UI/UX",
-                skills: "Tailwind CSS, Styled Components, Figma",
-              },
-              {
-                icon: <Cpu className="h-8 w-8" />,
-                title: "Herramientas",
-                skills: "Git, VS Code, npm, Webpack",
-              },
-              {
-                icon: <Lightbulb className="h-8 w-8" />,
-                title: "Soft Skills",
-                skills: "Trabajo en equipo, Comunicación, Resolución de problemas",
-              },
-              {
-                icon: <Rocket className="h-8 w-8" />,
-                title: "Otros",
-                skills: "SEO, Responsive Design, Performance",
-              },
-            ].map((skill, index) => (
-              <div
-                key={index}
-                className="skill-card neon-off p-4 rounded-lg border-2 border-[#00ffff] bg-black/30"
-                style={{
-                  boxShadow: "0 0 10px rgba(0, 255, 255, 0.5)",
-                  transition: "all 0.3s ease",
-                  transform: `translateY(${20 + index * 10}px)`,
-                  opacity: 0.7,
-                  animationDelay: `${index * 0.1}s`,
-                }}
-              >
-                <div className="flex items-center mb-2 text-[#00ffff]">
-                  {skill.icon}
-                  <h3 className="ml-2 text-lg font-bold" style={{ fontFamily: "var(--font-orbitron), sans-serif" }}>
-                    {skill.title}
-                  </h3>
-                </div>
-                <p className="text-white text-sm">{skill.skills}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Línea de tiempo o experiencia */}
-        <div className="mt-20">
-          <h3
-            className="text-center mb-10 text-2xl"
-            style={{
-              fontFamily: "var(--font-orbitron), sans-serif",
-              color: "#00ffff",
-              textShadow: "0 0 5px #00ffff, 0 0 10px rgba(0, 255, 255, 0.3)",
-            }}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Columna izquierda - Información personal */}
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            MI TRAYECTORIA
-          </h3>
+            <div className="neon-card p-8 rounded-lg border border-cyan-500/30 bg-black/20 backdrop-blur-sm">
+              <h3 className="text-2xl font-bold text-cyan-400 mb-6">¡Hola! Soy Maurizio</h3>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                Desarrollador frontend apasionado por crear experiencias web únicas y visualmente impactantes. Me
+                especializo en transformar ideas creativas en interfaces interactivas que cautivan a los usuarios.
+              </p>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                Con un enfoque en las últimas tecnologías como React, Next.js y animaciones avanzadas, busco
+                constantemente nuevas formas de innovar en el desarrollo web.
+              </p>
 
-          <div className="relative">
-            {/* Línea vertical neón */}
-            <div
-              className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-[#00ffff] via-[#ff00ff] to-[#00ffff]"
-              style={{ boxShadow: "0 0 8px #00ffff" }}
-            ></div>
-
-            {/* Eventos de la línea de tiempo */}
-            {[
-              {
-                year: "2023",
-                title: "Desarrollador Frontend Senior",
-                description:
-                  "Lideré el desarrollo de aplicaciones web utilizando React y Next.js, implementando las mejores prácticas y optimizando el rendimiento.",
-              },
-              {
-                year: "2021",
-                title: "Desarrollador Frontend",
-                description:
-                  "Trabajé en proyectos de comercio electrónico y aplicaciones SPA, mejorando la experiencia de usuario y la accesibilidad.",
-              },
-              {
-                year: "2019",
-                title: "Desarrollador Web Junior",
-                description:
-                  "Comencé mi carrera profesional desarrollando sitios web responsivos y aprendiendo las bases del desarrollo frontend.",
-              },
-            ].map((event, index) => (
-              <div
-                key={index}
-                className={`relative flex items-center mb-12 ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
-              >
-                {/* Punto en la línea de tiempo */}
-                <div
-                  className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-[#00ffff]"
-                  style={{ boxShadow: "0 0 10px #00ffff, 0 0 15px rgba(0, 255, 255, 0.7)" }}
-                ></div>
-
-                {/* Contenido */}
-                <div
-                  className={`w-5/12 p-4 rounded-lg border border-[#00ffff] bg-black/30 ${
-                    index % 2 === 0 ? "mr-auto pr-8" : "ml-auto pl-8"
-                  }`}
-                  style={{ boxShadow: "0 0 8px rgba(0, 255, 255, 0.3)" }}
-                >
-                  <div
-                    className="text-[#00ffff] font-bold mb-1"
-                    style={{ fontFamily: "var(--font-orbitron), sans-serif" }}
-                  >
-                    {event.year}
-                  </div>
-                  <h4 className="text-white text-lg font-semibold mb-2">{event.title}</h4>
-                  <p className="text-gray-300 text-sm">{event.description}</p>
-                </div>
+              <div className="flex flex-wrap gap-3 mt-8">
+                <span className="px-4 py-2 bg-cyan-500/20 border border-cyan-500/50 rounded-full text-cyan-300 text-sm">
+                  🎯 Orientado a resultados
+                </span>
+                <span className="px-4 py-2 bg-magenta-500/20 border border-magenta-500/50 rounded-full text-magenta-300 text-sm">
+                  🚀 Innovador
+                </span>
+                <span className="px-4 py-2 bg-green-500/20 border border-green-500/50 rounded-full text-green-300 text-sm">
+                  🎨 Creativo
+                </span>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Columna derecha - Skills */}
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <h3 className="text-2xl font-bold text-cyan-400 mb-8">Habilidades Técnicas</h3>
+            <div className="space-y-6">
+              {skills.map((skill, index) => (
+                <motion.div
+                  key={skill.name}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  transition={{ duration: 1, delay: index * 0.1 }}
+                  className="skill-item"
+                >
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-white font-medium">{skill.name}</span>
+                    <span className="text-cyan-400">{skill.level}%</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
+                    <motion.div
+                      className="h-full rounded-full relative"
+                      style={{ backgroundColor: skill.color }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.level}%` }}
+                      transition={{ duration: 1.5, delay: index * 0.1 }}
+                    >
+                      <div
+                        className="absolute inset-0 rounded-full"
+                        style={{
+                          boxShadow: `0 0 10px ${skill.color}`,
+                          background: `linear-gradient(90deg, ${skill.color}, ${skill.color}aa)`,
+                        }}
+                      />
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Sección de intereses */}
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-20"
+        >
+          <h3 className="text-2xl font-bold text-cyan-400 mb-12 text-center">Mis Pasiones</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {interests.map((interest, index) => (
+              <motion.div
+                key={interest.title}
+                initial={{ y: 50, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="interest-card p-6 rounded-lg border border-cyan-500/20 bg-black/30 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-300"
+              >
+                <interest.icon className="w-12 h-12 text-cyan-400 mb-4 mx-auto" />
+                <h4 className="text-xl font-bold text-white mb-2 text-center">{interest.title}</h4>
+                <p className="text-gray-400 text-center">{interest.desc}</p>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
-
-      {/* Efecto de partículas o estrellas en el fondo */}
-      <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: `${Math.random() * 3 + 1}px`,
-              height: `${Math.random() * 3 + 1}px`,
-              backgroundColor: Math.random() > 0.5 ? "#00ffff" : "#ff00ff",
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              boxShadow: `0 0 ${Math.random() * 5 + 2}px ${Math.random() > 0.5 ? "#00ffff" : "#ff00ff"}`,
-              animation: `twinkle ${Math.random() * 5 + 2}s infinite ${Math.random() * 5}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <style jsx>{`
-        @keyframes twinkle {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 1; }
-        }
-
-        .neon-off {
-          opacity: 0.5;
-          transform: translateY(20px);
-          transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .neon-on {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .skill-card.neon-on {
-          box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
-          transform: translateY(0);
-          opacity: 1;
-        }
-      `}</style>
-    </section>
+    </motion.section>
   )
 }
