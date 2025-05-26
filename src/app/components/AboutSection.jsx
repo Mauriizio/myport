@@ -48,12 +48,12 @@ export default function AboutSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="neon-card p-8 rounded-lg border border-cyan-500/30 bg-black/20 backdrop-blur-sm">
+
               <h3 className="text-2xl font-bold text-cyan-400 mb-6">¡Hola! Soy Maurizio</h3>
               <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                Desarrollador frontend apasionado por crear experiencias web únicas y visualmente impactantes. Me
-                especializo en transformar ideas creativas en interfaces interactivas que cautivan a los usuarios.
+                Desarrollador frontend apasionado por transformar ideas creativas en interfaces interactivas que cautivan a los usuarios.
               </p>
-              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              <p className="text-gray-300 text-lg leading-relaxed mb-6 ">
                 Con un enfoque en las últimas tecnologías como React, Next.js y animaciones avanzadas, busco
                 constantemente nuevas formas de innovar en el desarrollo web.
               </p>

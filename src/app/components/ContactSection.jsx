@@ -37,19 +37,19 @@ export default function ContactSection() {
     {
       icon: Mail,
       title: "Email",
-      value: "maurizio@example.com",
-      link: "mailto:maurizio@example.com",
+      value: "devmauriz@gmail.com",
+      link: "devmauriz@gmail.com",
     },
     {
       icon: Phone,
       title: "Teléfono",
-      value: "+1 (555) 123-4567",
-      link: "tel:+15551234567",
+      value: "+569 23927777",
+      link: "tel:+569 23927777",
     },
     {
       icon: MapPin,
       title: "Ubicación",
-      value: "Ciudad, País",
+      value: "Santiago de Chile",
       link: "#",
     },
   ]
@@ -167,8 +167,8 @@ export default function ContactSection() {
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="neon-card p-8 rounded-lg border border-cyan-500/30 bg-black/20 backdrop-blur-sm">
-              <h3 className="text-2xl font-bold text-cyan-400 mb-8">Envíame un mensaje</h3>
+            <div className="neon-card p-4 rounded-lg border border-cyan-500/30 bg-black/20 backdrop-blur-sm">
+              <h3 className="text-3xl font-bold text-cyan-400 mb-8">Envíame un mensaje</h3>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -177,7 +177,7 @@ export default function ContactSection() {
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
                   >
-                    <label className="block text-gray-300 mb-2">Nombre</label>
+                    <label className="block text-gray-300 mb-2">Nombre: </label>
                     <input
                       type="text"
                       name="name"
@@ -194,7 +194,7 @@ export default function ContactSection() {
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <label className="block text-gray-300 mb-2">Email</label>
+                    <label className="block text-gray-300 mb-2">Email: </label>
                     <input
                       type="email"
                       name="email"
@@ -212,7 +212,7 @@ export default function ContactSection() {
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                  <label className="block text-gray-300 mb-2">Asunto</label>
+                  <label className="block text-gray-300 mb-2">Asunto: </label>
                   <input
                     type="text"
                     name="subject"
@@ -229,7 +229,7 @@ export default function ContactSection() {
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                 >
-                  <label className="block text-gray-300 mb-2">Mensaje</label>
+                  <label className="block text-gray-300 mb-2">Mensaje: </label>
                   <textarea
                     name="message"
                     value={formData.message}
